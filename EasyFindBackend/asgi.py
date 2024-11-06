@@ -1,5 +1,5 @@
 """
-ASGI config for EasyFindBackend1 project.
+ASGI config for EasyFindBackend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'EasyFindBackend1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'EasyFindBackend.settings')
 
 application = get_asgi_application()
