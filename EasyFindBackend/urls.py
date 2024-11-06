@@ -1,9 +1,8 @@
-# myproject/urls.py
-
+# EasyFindBackend/urls.py
 from django.contrib import admin
-from django.urls import path, include  # Додайте 'include'
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myapp.urls')),  # Включіть URL вашого додатку
+    path('api/', include('myapp.urls')),  # Додаємо маршрути додатку
 ]

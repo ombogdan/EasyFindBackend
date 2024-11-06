@@ -4,30 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/.idea/EasyFindBackend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/myapp/views.py" afterDir="false" />
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Add superuser and init project">
+      <change afterPath="$PROJECT_DIR$/myapp/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/myapp/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyFindBackend1/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyFindBackend1/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/asgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyFindBackend1/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyFindBackend1/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyFindBackend1/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/README.MD" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyFindBackend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyFindBackend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/README.MD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +24,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2nOVtd34jV180HrigIzyy7tSbwv" />
   <component name="ProjectViewState">
@@ -99,7 +90,7 @@
       <updated>1728844324375</updated>
       <workItem from="1728844325623" duration="120000" />
       <workItem from="1730921719720" duration="3000" />
-      <workItem from="1730921727426" duration="997000" />
+      <workItem from="1730921727426" duration="2972000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1728844338918</created>
@@ -108,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1728844338918</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add superuser and init project">
+      <created>1730922741495</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730922741495</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,6 +114,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="Add superuser and init project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add superuser and init project" />
   </component>
 </project>
