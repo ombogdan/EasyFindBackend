@@ -7,8 +7,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+
+User = get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -37,8 +39,7 @@ class GoogleLoginView(APIView):
             email = idinfo['email']
             name = idinfo.get('name', '')
 
-            user, created = User.objects.get_or_create(email=email,
-                                                       defaults={'username': email, 'first_name': name})
+            user, created = User.objects.get_or_create(email=email, defaults={'email': email})
             refresh = RefreshToken.for_user(user)
 
             return Response({
