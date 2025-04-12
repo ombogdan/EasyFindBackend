@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Add login by google">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Update model" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +106,7 @@
       <workItem from="1728844325623" duration="120000" />
       <workItem from="1730921719720" duration="3000" />
       <workItem from="1730921727426" duration="5084000" />
-      <workItem from="1744476188361" duration="2412000" />
+      <workItem from="1744476188361" duration="2728000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1728844338918</created>
@@ -154,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1744477517827</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Update model">
+      <created>1744478730534</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1744478730534</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,7 +181,8 @@
     <MESSAGE value="Add requirements" />
     <MESSAGE value="Add ALLOWED_HOSTS" />
     <MESSAGE value="Add login by google" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add login by google" />
+    <MESSAGE value="Update model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update model" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EasyFindBackend$manage.coverage" NAME="manage Coverage Results" MODIFIED="1744476227490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
