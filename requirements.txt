@@ -3,7 +3,9 @@ Django==4.2.16
 djangorestframework==3.15.2
 sqlparse==0.5.1
 typing_extensions==4.12.2
-gunicorn==20.1.0  # Сервер WSGI для запуску вашого проєкту на продакшн сервері
+gunicorn==23.0.0  # Сервер WSGI для запуску вашого проєкту на продакшн сервері
 psycopg2-binary==2.9.3  # Драйвер PostgreSQL (якщо використовуєте PostgreSQL для бази даних)
 whitenoise==6.5.0  # Сервіс статичних файлів у продакшн середовищі
 python-decouple==3.8  # Для зберігання секретних змінних у .env файлі (секретний ключ, доступи)
+djangorestframework-simplejwt
+google-auth
