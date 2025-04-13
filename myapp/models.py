@@ -1,6 +1,7 @@
 # myapp/models.py
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.conf import settings
 
 class ClientUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -36,3 +37,47 @@ class ClientUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Client'
         verbose_name_plural = 'Clients'
+
+class OrganizationOwner(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.email
+
+class Organization(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='organization_images/', blank=True, null=True)
+    owner = models.ForeignKey(OrganizationOwner, on_delete=models.CASCADE, related_name='organizations')
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    address = models.CharField(max_length=500)
+    phone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+
+class WorkingHours(models.Model):
+    DAYS_OF_WEEK = [
+        ('mon', 'Понеділок'),
+        ('tue', 'Вівторок'),
+        ('wed', 'Середа'),
+        ('thu', 'Четвер'),
+        ('fri', 'Пʼятниця'),
+        ('sat', 'Субота'),
+        ('sun', 'Неділя'),
+    ]
+
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='working_hours')
+    day = models.CharField(max_length=3, choices=DAYS_OF_WEEK)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    is_closed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.organization.name} - {self.get_day_display()}"
+
+    class Meta:
+        unique_together = ('organization', 'day')
