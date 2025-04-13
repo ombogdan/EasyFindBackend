@@ -1,8 +1,8 @@
 # myapp/serializers.py
 from rest_framework import serializers
-from .models import CustomUser
+from .models import ClientUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
-        fields = ['id', 'email', 'user_type']
+        model = ClientUser
+        fields = ['id', 'email']

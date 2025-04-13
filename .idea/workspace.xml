@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Add refresh token" />
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Add last_name to CustomUser">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyFindBackend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,7 +113,7 @@
       <workItem from="1728844325623" duration="120000" />
       <workItem from="1730921719720" duration="3000" />
       <workItem from="1730921727426" duration="5084000" />
-      <workItem from="1744476188361" duration="5781000" />
+      <workItem from="1744476188361" duration="7030000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1728844338918</created>
@@ -185,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1744532335327</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Add last_name to CustomUser">
+      <created>1744538222843</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1744538222843</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,7 +228,8 @@
     <MESSAGE value="Add requests1" />
     <MESSAGE value="fix: enable static files for Render" />
     <MESSAGE value="Add refresh token" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add refresh token" />
+    <MESSAGE value="Add last_name to CustomUser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add last_name to CustomUser" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EasyFindBackend$manage.coverage" NAME="manage Coverage Results" MODIFIED="1744476227490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
