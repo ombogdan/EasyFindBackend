@@ -34,12 +34,33 @@ class GoogleLoginView(APIView):
             return Response({'error': 'Missing idToken'}, status=400)
 
         try:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(),
-                                                  "205264277767-pero3rub5m4ok98iv086dvhecdunjlg1.apps.googleusercontent.com")
+            idinfo = id_token.verify_oauth2_token(
+                token,
+                requests.Request(),
+                "205264277767-pero3rub5m4ok98iv086dvhecdunjlg1.apps.googleusercontent.com"
+            )
+
             email = idinfo['email']
             name = idinfo.get('name', '')
+            name_parts = name.strip().split(' ', 1)
 
-            user, created = User.objects.get_or_create(email=email, defaults={'email': email})
+            first_name = name_parts[0]
+            last_name = name_parts[1] if len(name_parts) > 1 else ''
+
+            user, created = User.objects.get_or_create(
+                email=email,
+                defaults={
+                    'email': email,
+                    'first_name': first_name,
+                    'last_name': last_name
+                }
+            )
+
+            if not created and not user.first_name:
+                user.first_name = first_name
+                user.last_name = last_name
+                user.save()
+
             refresh = RefreshToken.for_user(user)
 
             return Response({
@@ -47,7 +68,8 @@ class GoogleLoginView(APIView):
                 'refresh': str(refresh),
                 'user': {
                     'email': user.email,
-                    'name': user.first_name
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
                 }
             })
 
