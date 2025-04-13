@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Change ClientUser to Client">
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Delete Pillow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +204,21 @@
       <option name="project" value="LOCAL" />
       <updated>1744579854897</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Add new models">
+      <created>1744581270226</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1744581270226</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Delete Pillow">
+      <created>1744581345251</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1744581345251</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +249,9 @@
     <MESSAGE value="Add refresh token" />
     <MESSAGE value="Add last_name to CustomUser" />
     <MESSAGE value="Change CustomUser to Client" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change CustomUser to Client" />
+    <MESSAGE value="Add new models" />
+    <MESSAGE value="Delete Pillow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Delete Pillow" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EasyFindBackend$manage.coverage" NAME="manage Coverage Results" MODIFIED="1744476227490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

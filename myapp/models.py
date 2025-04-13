@@ -42,6 +42,12 @@ class OrganizationOwner(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.user.is_staff:
+            self.user.is_staff = True
+            self.user.save()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.user.email
 
