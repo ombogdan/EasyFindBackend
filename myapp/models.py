@@ -89,13 +89,17 @@ class WorkingHours(models.Model):
         unique_together = ('organization', 'day')
 
 class ServiceType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='service_types/', blank=True, null=True)
+    image = models.ImageField(upload_to='service_images/', blank=True, null=True)
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        related_name='services'
+    )
 
     def __str__(self):
         return self.name
-
 class Employee(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
