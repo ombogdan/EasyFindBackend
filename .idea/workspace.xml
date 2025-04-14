@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Delete Pillow">
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Change admin permissions">
+      <change afterPath="$PROJECT_DIR$/myapp/migrations/0003_servicetype_employee.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/myapp/migrations/0004_remove_employee_organization_employee_organizations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyFindBackend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyFindBackend/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1744581345251</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Change admin permissions">
+      <created>1744582525600</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1744582525600</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +262,8 @@
     <MESSAGE value="Change CustomUser to Client" />
     <MESSAGE value="Add new models" />
     <MESSAGE value="Delete Pillow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Delete Pillow" />
+    <MESSAGE value="Change admin permissions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change admin permissions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EasyFindBackend$manage.coverage" NAME="manage Coverage Results" MODIFIED="1744476227490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

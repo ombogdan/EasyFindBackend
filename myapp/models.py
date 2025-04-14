@@ -87,3 +87,24 @@ class WorkingHours(models.Model):
 
     class Meta:
         unique_together = ('organization', 'day')
+
+class ServiceType(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='service_types/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Employee(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, blank=True)
+    photo = models.ImageField(upload_to='employee_photos/', blank=True, null=True)
+
+    organizations = models.ManyToManyField('Organization', related_name='employees')  # 🔥 зміна тут
+
+    service_types = models.ManyToManyField(ServiceType, related_name='employees')
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

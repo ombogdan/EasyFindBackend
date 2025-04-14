@@ -1,4 +1,4 @@
-from .models import ClientUser, Organization, WorkingHours, OrganizationOwner
+from .models import ClientUser, Organization, WorkingHours, OrganizationOwner, Employee, ServiceType
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -66,16 +66,27 @@ class OrganizationAdmin(admin.ModelAdmin):
             obj.owner = owner
         obj.save()
 
-    def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser or (obj and obj.owner.user == request.user):
-            return True
-        return False
+    def has_module_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
     def has_view_permission(self, request, obj=None):
-        return self.has_change_permission(request, obj)
+        # дозволити перегляд
+        if request.user.is_superuser:
+            return True
+        if obj is None:
+            return OrganizationOwner.objects.filter(user=request.user).exists()
+        return obj.owner.user == request.user
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return obj and obj.owner.user == request.user
 
     def has_delete_permission(self, request, obj=None):
         return self.has_change_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
 @admin.register(WorkingHours)
 class WorkingHoursAdmin(admin.ModelAdmin):
@@ -87,13 +98,83 @@ class WorkingHoursAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(organization__owner__user=request.user)
 
-    def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser or (obj and obj.organization.owner.user == request.user):
-            return True
-        return False
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            owner = OrganizationOwner.objects.get(user=request.user)
+            obj.organization = owner.organizations.first()
+        obj.save()
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
     def has_view_permission(self, request, obj=None):
-        return self.has_change_permission(request, obj)
+        if request.user.is_superuser:
+            return True
+        if obj is None:
+            return OrganizationOwner.objects.filter(user=request.user).exists()
+        return obj.organization.owner.user == request.user
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return obj and obj.organization.owner.user == request.user
 
     def has_delete_permission(self, request, obj=None):
         return self.has_change_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+
+@admin.register(ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'get_organizations')
+    list_filter = ('organizations',)
+    search_fields = ('first_name', 'last_name', 'middle_name')
+
+    def get_organizations(self, obj):
+        return ", ".join([org.name for org in obj.organizations.all()])
+    get_organizations.short_description = 'Organizations'
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'organizations' and not request.user.is_superuser:
+            kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        # Якщо немає організацій вибраних — автоматично додаємо першу
+        if not obj.organizations.exists() and not request.user.is_superuser:
+            orgs = Organization.objects.filter(owner__user=request.user)
+            obj.organizations.set(orgs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(organizations__owner__user=request.user).distinct()
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        if obj is None:
+            return OrganizationOwner.objects.filter(user=request.user).exists()
+        return obj.organizations.filter(owner__user=request.user).exists()
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return obj and obj.organizations.filter(owner__user=request.user).exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_change_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()

@@ -9,6 +9,9 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from myapp.models import Organization
+from math import radians, cos, sin, asin, sqrt
 
 User = get_user_model()
 
@@ -75,3 +78,48 @@ class GoogleLoginView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class NearbyOrganizationsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def haversine(self, lon1, lat1, lon2, lat2):
+        # Радіус Землі в км
+        R = 6371.0
+
+        lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+
+        a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+        c = 2 * asin(sqrt(a))
+        distance = R * c
+        return distance
+
+    def post(self, request):
+        lat = request.data.get('latitude')
+        lon = request.data.get('longitude')
+
+        if lat is None or lon is None:
+            return Response({'error': 'Missing latitude or longitude'}, status=400)
+
+        lat = float(lat)
+        lon = float(lon)
+
+        nearby_orgs = []
+        for org in Organization.objects.all():
+            if org.latitude and org.longitude:
+                distance = self.haversine(lon, lat, org.longitude, org.latitude)
+                if distance <= 20:
+                    nearby_orgs.append({
+                        'id': org.id,
+                        'name': org.name,
+                        'description': org.description,
+                        'image': request.build_absolute_uri(org.image.url) if org.image else None,
+                        'latitude': org.latitude,
+                        'longitude': org.longitude,
+                        'address': org.address,
+                        'phone': org.phone,
+                        'distance_km': round(distance, 2),
+                    })
+
+        return Response({'results': nearby_orgs})
