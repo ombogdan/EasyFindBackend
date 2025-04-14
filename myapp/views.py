@@ -139,32 +139,28 @@ class NearbyServicesView(APIView):
         services_with_distance = []
 
         if lat and lon:
-            organizations = Organization.objects.all()
-
-            for org in organizations:
+            for org in Organization.objects.all():
                 distance = haversine(lat, lon, org.latitude, org.longitude)
-                for employee in Employee.objects.filter(organizations=org):
-                    for service in employee.services.all():
-                        services_with_distance.append({
-                            "id": service.id,
-                            "name": service.name,
-                            "description": service.description,
-                            "image": service.image.url if service.image else None,
-                            "distance": round(distance, 2)
-                        })
-
+                for service in org.services.all():
+                    services_with_distance.append({
+                        "id": service.id,
+                        "name": service.name,
+                        "description": service.description,
+                        "image": service.image.url if service.image else None,
+                        "distance": round(distance, 2)
+                    })
             services_with_distance.sort(key=lambda x: x["distance"])
         else:
-            # Випадкові сервіси
             all_services = ServiceType.objects.all()
-            all_list = [{
-                "id": s.id,
-                "name": s.name,
-                "description": s.description,
-                "image": s.image.url if s.image else None,
-                "distance": None
-            } for s in all_services]
-            services_with_distance = random.sample(all_list, min(len(all_list), page_size * page))
+            services_with_distance = random.sample([
+                {
+                    "id": s.id,
+                    "name": s.name,
+                    "description": s.description,
+                    "image": s.image.url if s.image else None,
+                    "distance": None
+                } for s in all_services
+            ], min(len(all_services), page_size * page))
 
         paginator = Paginator(services_with_distance, page_size)
         paginated = paginator.get_page(page)
