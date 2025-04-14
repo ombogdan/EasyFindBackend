@@ -1,6 +1,9 @@
 # myapp/views.py
+import random
+
+from django.core.paginator import Paginator
 from rest_framework import viewsets
-from .models import ClientUser
+from .models import ClientUser, ServiceType
 from .serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -79,21 +82,21 @@ class GoogleLoginView(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+def haversine(self, lon1, lat1, lon2, lat2):
+    # Радіус Землі в км
+    R = 6371.0
+
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    distance = R * c
+    return distance
+
 class NearbyOrganizationsView(APIView):
     permission_classes = [IsAuthenticated]
-
-    def haversine(self, lon1, lat1, lon2, lat2):
-        # Радіус Землі в км
-        R = 6371.0
-
-        lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-
-        a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-        c = 2 * asin(sqrt(a))
-        distance = R * c
-        return distance
 
     def post(self, request):
         lat = request.data.get('latitude')
@@ -108,7 +111,7 @@ class NearbyOrganizationsView(APIView):
         nearby_orgs = []
         for org in Organization.objects.all():
             if org.latitude and org.longitude:
-                distance = self.haversine(lon, lat, org.longitude, org.latitude)
+                distance = haversine(lon, lat, org.longitude, org.latitude)
                 if distance <= 20:
                     nearby_orgs.append({
                         'id': org.id,
@@ -123,3 +126,53 @@ class NearbyOrganizationsView(APIView):
                     })
 
         return Response({'results': nearby_orgs})
+
+class NearbyServicesView(APIView):
+    def get(self, request):
+        try:
+            lat = float(request.query_params.get("latitude", 0))
+            lon = float(request.query_params.get("longitude", 0))
+            page = int(request.query_params.get("page", 1))
+            page_size = int(request.query_params.get("page_size", 20))
+        except ValueError:
+            return Response({"error": "Invalid latitude, longitude, or pagination"}, status=400)
+
+        services_with_distance = []
+
+        if lat and lon:
+            organizations = Organization.objects.all()
+
+            for org in organizations:
+                distance = haversine(lat, lon, org.latitude, org.longitude)
+                for employee in org.employee_set.all():
+                    for service in employee.services.all():
+                        services_with_distance.append({
+                            "id": service.id,
+                            "name": service.name,
+                            "description": service.description,
+                            "image": service.image.url if service.image else None,
+                            "distance": round(distance, 2)
+                        })
+
+            services_with_distance.sort(key=lambda x: x["distance"])
+        else:
+            # Випадкові сервіси
+            all_services = ServiceType.objects.all()
+            all_list = [{
+                "id": s.id,
+                "name": s.name,
+                "description": s.description,
+                "image": s.image.url if s.image else None,
+                "distance": None
+            } for s in all_services]
+            services_with_distance = random.sample(all_list, min(len(all_list), page_size * page))
+
+        paginator = Paginator(services_with_distance, page_size)
+        paginated = paginator.get_page(page)
+
+        return Response({
+            "results": paginated.object_list,
+            "page": page,
+            "total_pages": paginator.num_pages,
+            "total_items": paginator.count
+        })
