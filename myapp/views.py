@@ -3,7 +3,7 @@ import random
 
 from django.core.paginator import Paginator
 from rest_framework import viewsets
-from .models import ClientUser, ServiceType
+from .models import ClientUser, ServiceType, Employee
 from .serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -143,7 +143,7 @@ class NearbyServicesView(APIView):
 
             for org in organizations:
                 distance = haversine(lat, lon, org.latitude, org.longitude)
-                for employee in org.employee_set.all():
+                for employee in Employee.objects.filter(organizations=org):
                     for service in employee.services.all():
                         services_with_distance.append({
                             "id": service.id,
