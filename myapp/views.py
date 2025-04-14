@@ -15,8 +15,20 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from myapp.models import Organization
 from math import radians, cos, sin, asin, sqrt
-
 User = get_user_model()
+
+def haversine(lon1, lat1, lon2, lat2):
+    # Радіус Землі в км
+    R = 6371.0
+
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    distance = R * c
+    return distance
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = ClientUser.objects.all()
@@ -81,19 +93,6 @@ class GoogleLoginView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-def haversine(self, lon1, lat1, lon2, lat2):
-    # Радіус Землі в км
-    R = 6371.0
-
-    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a))
-    distance = R * c
-    return distance
 
 class NearbyOrganizationsView(APIView):
     permission_classes = [IsAuthenticated]
