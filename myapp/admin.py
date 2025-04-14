@@ -15,7 +15,7 @@ class ClientUserAdmin(UserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
-                'groups',            # 🔥 додай це
+                'groups',  # 🔥 додай це
                 'user_permissions',  # 🔥 і це
             )
         }),
@@ -30,9 +30,9 @@ class ClientUserAdmin(UserAdmin):
                 'password2',
                 'is_active',
                 'is_staff',
-                'is_superuser',       # 🔥 додай це
-                'groups',             # 🔥 і це
-                'user_permissions',   # 🔥 і це
+                'is_superuser',  # 🔥 додай це
+                'groups',  # 🔥 і це
+                'user_permissions',  # 🔥 і це
             ),
         }),
     )
@@ -50,6 +50,7 @@ class OrganizationOwnerAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return request.user.is_superuser
 
+
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'phone')
@@ -62,8 +63,10 @@ class OrganizationAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser:
-            owner = OrganizationOwner.objects.get(user=request.user)
-            obj.owner = owner
+            if request.user.is_authenticated:
+                owner = OrganizationOwner.objects.filter(user=request.user).first()
+                if owner:
+                    obj.owner = owner
         obj.save()
 
     def has_module_permission(self, request):
@@ -88,6 +91,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
+
 @admin.register(WorkingHours)
 class WorkingHoursAdmin(admin.ModelAdmin):
     list_display = ('organization', 'day', 'start_time', 'end_time', 'is_closed')
@@ -100,8 +104,10 @@ class WorkingHoursAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if not request.user.is_superuser:
-            owner = OrganizationOwner.objects.get(user=request.user)
-            obj.organization = owner.organizations.first()
+            if request.user.is_authenticated:
+                owner = OrganizationOwner.objects.filter(user=request.user).first()
+                if owner:
+                    obj.organization = owner.organizations.first()
         obj.save()
 
     def has_module_permission(self, request):
@@ -125,10 +131,12 @@ class WorkingHoursAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
+
 @admin.register(ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
@@ -138,6 +146,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 
     def get_organizations(self, obj):
         return ", ".join([org.name for org in obj.organizations.all()])
+
     get_organizations.short_description = 'Organizations'
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
