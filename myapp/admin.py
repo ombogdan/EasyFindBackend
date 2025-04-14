@@ -2,7 +2,6 @@ from .models import ClientUser, Organization, WorkingHours, OrganizationOwner, E
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-
 @admin.register(ClientUser)
 class ClientUserAdmin(UserAdmin):
     model = ClientUser
@@ -15,8 +14,8 @@ class ClientUserAdmin(UserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
-                'groups',  # 🔥 додай це
-                'user_permissions',  # 🔥 і це
+                'groups',
+                'user_permissions',
             )
         }),
         ('Important dates', {'fields': ('last_login',)}),
@@ -30,9 +29,9 @@ class ClientUserAdmin(UserAdmin):
                 'password2',
                 'is_active',
                 'is_staff',
-                'is_superuser',  # 🔥 додай це
-                'groups',  # 🔥 і це
-                'user_permissions',  # 🔥 і це
+                'is_superuser',
+                'groups',
+                'user_permissions',
             ),
         }),
     )
@@ -59,25 +58,29 @@ class OrganizationAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
+        if not request.user.is_authenticated:
+            return qs.none()
         return qs.filter(owner__user=request.user)
 
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
-            if request.user.is_authenticated:
-                owner = request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
-                if owner:
-                    obj.owner = owner
+        if not request.user.is_superuser and request.user.is_authenticated:
+            owner = OrganizationOwner.objects.filter(user=request.user).first()
+            if owner:
+                obj.owner = owner
         obj.save()
 
     def has_module_permission(self, request):
-        return request.user.is_superuser or request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
+        if not request.user.is_authenticated:
+            return False
+        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
 
     def has_view_permission(self, request, obj=None):
-        # дозволити перегляд
         if request.user.is_superuser:
             return True
+        if not request.user.is_authenticated:
+            return False
         if obj is None:
-            return request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
+            return OrganizationOwner.objects.filter(user=request.user).exists()
         return obj.owner.user == request.user
 
     def has_change_permission(self, request, obj=None):
@@ -89,7 +92,7 @@ class OrganizationAdmin(admin.ModelAdmin):
         return self.has_change_permission(request, obj)
 
     def has_add_permission(self, request):
-        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
 
 @admin.register(WorkingHours)
@@ -100,24 +103,27 @@ class WorkingHoursAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
+        if not request.user.is_authenticated:
+            return qs.none()
         return qs.filter(organization__owner__user=request.user)
 
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
-            if request.user.is_authenticated:
-                owner = request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
-                if owner:
-                    obj.organization = owner.organizations.first()
+        if not request.user.is_superuser and request.user.is_authenticated:
+            owner = OrganizationOwner.objects.filter(user=request.user).first()
+            if owner:
+                obj.organization = owner.organizations.first()
         obj.save()
 
     def has_module_permission(self, request):
-        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
     def has_view_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
+        if not request.user.is_authenticated:
+            return False
         if obj is None:
-            return request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
+            return OrganizationOwner.objects.filter(user=request.user).exists()
         return obj.organization.owner.user == request.user
 
     def has_change_permission(self, request, obj=None):
@@ -129,7 +135,7 @@ class WorkingHoursAdmin(admin.ModelAdmin):
         return self.has_change_permission(request, obj)
 
     def has_add_permission(self, request):
-        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
 
 @admin.register(ServiceType)
@@ -156,7 +162,6 @@ class EmployeeAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        # Якщо немає організацій вибраних — автоматично додаємо першу
         if not obj.organizations.exists() and not request.user.is_superuser:
             orgs = Organization.objects.filter(owner__user=request.user)
             obj.organizations.set(orgs)
@@ -165,16 +170,20 @@ class EmployeeAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
+        if not request.user.is_authenticated:
+            return qs.none()
         return qs.filter(organizations__owner__user=request.user).distinct()
 
     def has_module_permission(self, request):
-        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
     def has_view_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
+        if not request.user.is_authenticated:
+            return False
         if obj is None:
-            return request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists()
+            return OrganizationOwner.objects.filter(user=request.user).exists()
         return obj.organizations.filter(owner__user=request.user).exists()
 
     def has_change_permission(self, request, obj=None):
@@ -186,4 +195,4 @@ class EmployeeAdmin(admin.ModelAdmin):
         return self.has_change_permission(request, obj)
 
     def has_add_permission(self, request):
-        return request.user.is_superuser or OrganizationOwner.objects.filter(user=request.user).exists()
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
