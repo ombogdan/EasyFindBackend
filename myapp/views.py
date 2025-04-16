@@ -152,14 +152,13 @@ class NearbyServicesView(APIView):
             services_with_distance.sort(key=lambda x: x["distance"])
         else:
             all_services = ServiceType.objects.all()
-            full_url = f"{settings.MEDIA_URL}{s.image.name}" if s.image else None
-
             services_with_distance = random.sample([
                 {
                     "id": s.id,
                     "name": s.name,
                     "description": s.description,
-                    "image": f"https://easyfindbackend.onrender.com{full_url}" if full_url else None,
+                    "image": request.build_absolute_uri(s.image.url) if s.image and s.image.url.startswith(
+                        "/") else s.image.url if s.image else None,
                     "distance": None
                 } for s in all_services
             ], min(len(all_services), page_size * page))
