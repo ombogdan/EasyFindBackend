@@ -145,7 +145,7 @@ class NearbyServicesView(APIView):
                         "id": service.id,
                         "name": service.name,
                         "description": service.description,
-                        "image": service.image.url if service.image else None,
+                        "image": service.image.name if service.image else None,
                         "distance": round(distance, 2)
                     })
             services_with_distance.sort(key=lambda x: x["distance"])
@@ -156,7 +156,7 @@ class NearbyServicesView(APIView):
                     "id": s.id,
                     "name": s.name,
                     "description": s.description,
-                    "image": s.image.url if s.image else None,
+                    "image": s.image.name if s.image else None,
                     "distance": None
                 } for s in all_services
             ], min(len(all_services), page_size * page))
