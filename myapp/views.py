@@ -141,12 +141,11 @@ class NearbyServicesView(APIView):
             for org in Organization.objects.all():
                 distance = haversine(lat, lon, org.latitude, org.longitude)
                 for service in org.services.all():
-                    full_url = f"{settings.MEDIA_URL}{service.image.name}" if service.image else None
                     services_with_distance.append({
                         "id": service.id,
                         "name": service.name,
                         "description": service.description,
-                        "image": f"https://easyfindbackend.onrender.com{full_url}" if full_url else None,
+                        "image": service.image.url if service.image else None,
                         "distance": round(distance, 2)
                     })
             services_with_distance.sort(key=lambda x: x["distance"])
@@ -157,8 +156,7 @@ class NearbyServicesView(APIView):
                     "id": s.id,
                     "name": s.name,
                     "description": s.description,
-                    "image": request.build_absolute_uri(s.image.url) if s.image and s.image.url.startswith(
-                        "/") else s.image.url if s.image else None,
+                    "image": s.image.url if s.image else None,
                     "distance": None
                 } for s in all_services
             ], min(len(all_services), page_size * page))
