@@ -1,3 +1,4 @@
+from .adminViews import WorkingHoursForm
 from .models import ClientUser, Organization, WorkingHours, OrganizationOwner, Employee, ServiceType
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -97,6 +98,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(WorkingHours)
 class WorkingHoursAdmin(admin.ModelAdmin):
+    form = WorkingHoursForm
     list_display = ('organization', 'day', 'start_time', 'end_time', 'is_closed')
 
     def get_queryset(self, request):
