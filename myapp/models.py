@@ -97,17 +97,15 @@ class ServiceType(models.Model):
         on_delete=models.CASCADE,
         related_name='services'
     )
-
     def __str__(self):
         return self.name
+
 class Employee(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(upload_to='employee_photos/', blank=True, null=True)
-
-    organizations = models.ManyToManyField('Organization', related_name='employees')  # 🔥 зміна тут
-
+    organizations = models.ManyToManyField(Organization, related_name='employees')
     service_types = models.ManyToManyField(ServiceType, related_name='employees')
 
     def __str__(self):

@@ -140,9 +140,37 @@ class WorkingHoursAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'organization')
     search_fields = ('name',)
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if not request.user.is_authenticated:
+            return qs.none()
+        return qs.filter(organization__owner__user=request.user)
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        if obj is None:
+            return OrganizationOwner.objects.filter(user=request.user).exists()
+        return obj.organization.owner.user == request.user
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return obj and obj.organization.owner.user == request.user
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_change_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
