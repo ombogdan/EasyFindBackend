@@ -10,7 +10,7 @@ class WorkingHoursForm(forms.ModelForm):
 
     class Meta:
         model = WorkingHours
-        fields = ['organization', 'days', 'start_time', 'end_time', 'is_closed']
+        fields = '__all__'
 
     def save(self, commit=True):
         org = self.cleaned_data['organization']

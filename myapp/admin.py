@@ -101,6 +101,9 @@ class WorkingHoursAdmin(admin.ModelAdmin):
     form = WorkingHoursForm
     list_display = ('organization', 'day', 'start_time', 'end_time', 'is_closed')
 
+    def save_related(self, request, form, formsets, change):
+        pass
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
