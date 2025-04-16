@@ -53,6 +53,7 @@ class OrganizationOwnerAdmin(admin.ModelAdmin):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
+    search_fields = ['name']
     list_display = ('name', 'owner', 'phone')
 
     def get_queryset(self, request):
@@ -145,8 +146,8 @@ class WorkingHoursAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
+    search_fields = ['name']
     list_display = ('name', 'organization')
-    search_fields = ('name',)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -179,6 +180,7 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['organizations', 'service_types']
     list_display = ('first_name', 'last_name', 'get_organizations')
     list_filter = ('organizations',)
     search_fields = ('first_name', 'last_name', 'middle_name')
