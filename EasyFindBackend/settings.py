@@ -2,6 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 import dj_database_url
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +16,7 @@ SECRET_KEY = 'django-insecure-(&zwtmb8i*_i-70vhy-dvoyl_mzkn=i!p$=)z!e%=&c5q_x1oz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['easyfindbackend.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['easyfindbackend.onrender.com', '127.0.0.1', 'localhost', '*']
 
 # Application definition
 
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     'myapp',
     'rest_framework',
     'rest_framework_simplejwt',
+    'storages',
 ]
 
 REST_FRAMEWORK = {
@@ -126,5 +128,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 🔥 потрібна а�
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'media')
+GS_BUCKET_NAME = "easyfind-3b1a6.firebasestorage.app"
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, "EasyFindBackend/firebase-key.json")
+)
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_DEFAULT_ACL = 'publicRead'
+GS_QUERYSTRING_AUTH = False
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

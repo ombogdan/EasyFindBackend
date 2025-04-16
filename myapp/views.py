@@ -1,6 +1,5 @@
 # myapp/views.py
 import random
-
 from django.core.paginator import Paginator
 from rest_framework import viewsets
 from .models import ClientUser, ServiceType, Employee
@@ -15,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from myapp.models import Organization
 from math import radians, cos, sin, asin, sqrt
+from django.conf import settings
 User = get_user_model()
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -137,27 +137,29 @@ class NearbyServicesView(APIView):
             return Response({"error": "Invalid latitude, longitude, or pagination"}, status=400)
 
         services_with_distance = []
-
         if lat and lon:
             for org in Organization.objects.all():
                 distance = haversine(lat, lon, org.latitude, org.longitude)
                 for service in org.services.all():
+                    full_url = f"{settings.MEDIA_URL}{service.image.name}" if service.image else None
                     services_with_distance.append({
                         "id": service.id,
                         "name": service.name,
                         "description": service.description,
-                        "image": service.image.url if service.image else None,
+                        "image": f"https://easyfindbackend.onrender.com{full_url}" if full_url else None,
                         "distance": round(distance, 2)
                     })
             services_with_distance.sort(key=lambda x: x["distance"])
         else:
             all_services = ServiceType.objects.all()
+            full_url = f"{settings.MEDIA_URL}{s.image.name}" if s.image else None
+
             services_with_distance = random.sample([
                 {
                     "id": s.id,
                     "name": s.name,
                     "description": s.description,
-                    "image": s.image.url if s.image else None,
+                    "image": f"https://easyfindbackend.onrender.com{full_url}" if full_url else None,
                     "distance": None
                 } for s in all_services
             ], min(len(all_services), page_size * page))
