@@ -128,7 +128,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 🔥 потрібна а�
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GS_BUCKET_NAME = "easyfind-3b1a6.appspot.com"
+GS_BUCKET_NAME = "easyfind-3b1a6.firebasestorage.app"
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     os.path.join(BASE_DIR, "EasyFindBackend/firebase-key.json")
 )
