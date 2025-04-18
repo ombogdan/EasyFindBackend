@@ -143,7 +143,6 @@ class WorkingHoursAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
 
-
 @admin.register(ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
     search_fields = ['name']
@@ -177,6 +176,11 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return request.user.is_superuser or (request.user.is_authenticated and OrganizationOwner.objects.filter(user=request.user).exists())
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "organization" and not request.user.is_superuser:
+            kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
