@@ -14,7 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from myapp.models import Organization
 from math import radians, cos, sin, asin, sqrt
-from django.conf import settings
+from django.http import JsonResponse
+
 User = get_user_model()
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -146,7 +147,16 @@ class NearbyServicesView(APIView):
                         "name": service.name,
                         "description": service.description,
                         "image": service.image.name if service.image else None,
-                        "distance": round(distance, 2)
+                        "distance": round(distance, 2),
+                        "organization": {
+                            "id": org.id,
+                            "name": org.name,
+                            "latitude": org.latitude,
+                            "longitude": org.longitude,
+                            "address": org.address,
+                            "phone": org.phone,
+                            "image": request.build_absolute_uri(org.image.url) if org.image else None,
+                        }
                     })
             services_with_distance.sort(key=lambda x: x["distance"])
         else:
@@ -157,7 +167,16 @@ class NearbyServicesView(APIView):
                     "name": s.name,
                     "description": s.description,
                     "image": s.image.name if s.image else None,
-                    "distance": None
+                    "distance": None,
+                    "organization": {
+                        "id": s.organization.id,
+                        "name": s.organization.name,
+                        "latitude": s.organization.latitude,
+                        "longitude": s.organization.longitude,
+                        "address": s.organization.address,
+                        "phone": s.organization.phone,
+                        "image": request.build_absolute_uri(s.organization.image.url) if s.organization.image else None,
+                    }
                 } for s in all_services
             ], min(len(all_services), page_size * page))
 
@@ -170,3 +189,9 @@ class NearbyServicesView(APIView):
             "total_pages": paginator.num_pages,
             "total_items": paginator.count
         })
+
+def csrf_failure(request, reason=""):
+    return JsonResponse({
+        "error": "CSRF verification failed.",
+        "reason": reason,
+    }, status=403)
