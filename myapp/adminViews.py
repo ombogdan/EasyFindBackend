@@ -1,5 +1,6 @@
 from django import forms
-from myapp.models import WorkingHours
+from myapp.models import WorkingHours, Employee
+
 
 class WorkingHoursForm(forms.ModelForm):
     days = forms.MultipleChoiceField(
@@ -34,3 +35,11 @@ class WorkingHoursForm(forms.ModelForm):
                 instances.append(instance)
 
         return instances[0] if instances else None
+
+class EmployeeAdminForm(forms.ModelForm):
+    email = forms.EmailField(required=False)
+    password = forms.CharField(required=False, widget=forms.PasswordInput)
+
+    class Meta:
+        model = Employee
+        fields = ['first_name', 'last_name', 'middle_name', 'photo', 'organizations', 'service_types']

@@ -1,4 +1,4 @@
-from .adminViews import WorkingHoursForm
+from .adminViews import WorkingHoursForm, EmployeeAdminForm
 from .models import ClientUser, Organization, WorkingHours, OrganizationOwner, Employee, ServiceType
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -182,12 +182,24 @@ class ServiceTypeAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['organizations', 'service_types']
+    form = EmployeeAdminForm
     list_display = ('first_name', 'last_name', 'get_organizations')
-    list_filter = ('organizations',)
-    search_fields = ('first_name', 'last_name', 'middle_name')
+
+    def save_model(self, request, obj, form, change):
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+
+        if not change and email and password:
+            user = ClientUser.objects.create_user(
+                email=email,
+                password=password,
+                user_type='employee'
+            )
+            obj.user = user
+        super().save_model(request, obj, form, change)
 
     def get_organizations(self, obj):
         return ", ".join([org.name for org in obj.organizations.all()])
@@ -198,12 +210,6 @@ class EmployeeAdmin(admin.ModelAdmin):
         if db_field.name == 'organizations' and not request.user.is_superuser:
             kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
         return super().formfield_for_manytomany(db_field, request, **kwargs)
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        if not obj.organizations.exists() and not request.user.is_superuser:
-            orgs = Organization.objects.filter(owner__user=request.user)
-            obj.organizations.set(orgs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

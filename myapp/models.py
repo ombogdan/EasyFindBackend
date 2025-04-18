@@ -107,6 +107,7 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='employee_photos/', blank=True, null=True)
     organizations = models.ManyToManyField(Organization, related_name='employees')
     service_types = models.ManyToManyField(ServiceType, related_name='employees')
+    user = models.OneToOneField(ClientUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
