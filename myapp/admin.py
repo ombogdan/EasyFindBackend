@@ -186,6 +186,7 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     form = EmployeeAdminForm
+    autocomplete_fields = ['organizations', 'service_types']
     list_display = ('first_name', 'last_name', 'get_organizations')
 
     def save_model(self, request, obj, form, change):
@@ -207,8 +208,11 @@ class EmployeeAdmin(admin.ModelAdmin):
     get_organizations.short_description = 'Organizations'
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == 'organizations' and not request.user.is_superuser:
-            kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
+        if not request.user.is_superuser:
+            if db_field.name == 'organizations':
+                kwargs["queryset"] = Organization.objects.filter(owner__user=request.user)
+            elif db_field.name == 'service_types':
+                kwargs["queryset"] = ServiceType.objects.filter(organization__owner__user=request.user)
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def get_queryset(self, request):
