@@ -3,6 +3,8 @@ from pathlib import Path
 import os
 import dj_database_url
 from google.oauth2 import service_account
+import base64
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,9 +131,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 🔥 потрібна а�
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GS_BUCKET_NAME = "easyfind-3b1a6.firebasestorage.app"
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, "EasyFindBackend/firebase-key.json")
-)
+
+encoded_key = os.environ.get("FIREBASE_CREDENTIALS")
+decoded_json = base64.b64decode(encoded_key).decode("utf-8")
+firebase_credentials_dict = json.loads(decoded_json)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(firebase_credentials_dict)
+
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_DEFAULT_ACL = 'publicRead'
 GS_QUERYSTRING_AUTH = False
