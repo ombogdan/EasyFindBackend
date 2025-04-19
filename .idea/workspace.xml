@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Add login and password for employee" />
+    <list default="true" id="877cefe5-fac7-4d8c-9439-f1b3f90f78ef" name="Changes" comment="Change select">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/adminViews.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/adminViews.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/myapp/models.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -139,7 +144,7 @@
       <workItem from="1730921727426" duration="5084000" />
       <workItem from="1744476188361" duration="7377000" />
       <workItem from="1744829744327" duration="5792000" />
-      <workItem from="1744836223394" duration="10119000" />
+      <workItem from="1744836223394" duration="12871000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1728844338918</created>
@@ -464,7 +469,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745016239255</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Change select">
+      <option name="closed" value="true" />
+      <created>1745016654283</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1745016654283</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +495,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete Pillow" />
     <MESSAGE value="Change admin permissions" />
     <MESSAGE value="Change admin rules and add NearbyOrganizationsView" />
     <MESSAGE value="Update admin.py" />
@@ -507,7 +519,8 @@
     <MESSAGE value="Add new config" />
     <MESSAGE value="Change ServiceTypeAdmin" />
     <MESSAGE value="Add login and password for employee" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add login and password for employee" />
+    <MESSAGE value="Change select" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change select" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EasyFindBackend$manage.coverage" NAME="manage Coverage Results" MODIFIED="1744476227490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

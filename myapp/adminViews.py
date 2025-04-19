@@ -36,10 +36,36 @@ class WorkingHoursForm(forms.ModelForm):
 
         return instances[0] if instances else None
 
-class EmployeeAdminForm(forms.ModelForm):
-    email = forms.EmailField(required=False)
-    password = forms.CharField(required=False, widget=forms.PasswordInput)
+
+class EmployeeForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label="Email")
+    password = forms.CharField(
+        required=False, widget=forms.PasswordInput, label="Password"
+    )
+    change_password = forms.BooleanField(
+        required=False, label="Change password?"
+    )
 
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'middle_name', 'photo', 'organizations', 'service_types']
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        password = cleaned_data.get("password")
+        change_password = cleaned_data.get("change_password")
+        instance = self.instance
+
+        if not instance.pk:
+            # новий працівник
+            if not email:
+                self.add_error("email", "Email обовʼязковий.")
+            if not password:
+                self.add_error("password", "Password обовʼязковий.")
+        else:
+            # редагування існуючого
+            if change_password and not password:
+                self.add_error("password", "Вкажіть новий пароль або зніміть галочку 'Change password'.")
+
+        return cleaned_data
