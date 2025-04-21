@@ -132,10 +132,14 @@ class NearbyServicesView(APIView):
         try:
             lat_param = request.query_params.get("latitude")
             lon_param = request.query_params.get("longitude")
-            lat = float(lat_param) if lat_param else None
-            lon = float(lon_param) if lon_param else None
-            page = int(request.query_params.get("page", 1))
-            page_size = int(request.query_params.get("page_size", 20))
+            lat = float(lat_param) if lat_param not in [None, '', 'null'] else None
+            lon = float(lon_param) if lon_param not in [None, '', 'null'] else None
+
+            page_param = request.query_params.get("page")
+            page = int(page_param) if page_param not in [None, '', 'null'] else 1
+
+            page_size_param = request.query_params.get("page_size")
+            page_size = int(page_size_param) if page_size_param not in [None, '', 'null'] else 20
         except ValueError:
             return Response({"error": "Invalid page or page_size"}, status=400)
 
