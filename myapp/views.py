@@ -130,15 +130,18 @@ class NearbyOrganizationsView(APIView):
 class NearbyServicesView(APIView):
     def get(self, request):
         try:
-            lat = float(request.query_params.get("latitude", 0))
-            lon = float(request.query_params.get("longitude", 0))
+            lat_param = request.query_params.get("latitude")
+            lon_param = request.query_params.get("longitude")
+            lat = float(lat_param) if lat_param else None
+            lon = float(lon_param) if lon_param else None
             page = int(request.query_params.get("page", 1))
             page_size = int(request.query_params.get("page_size", 20))
         except ValueError:
-            return Response({"error": "Invalid latitude, longitude, or pagination"}, status=400)
+            return Response({"error": "Invalid page or page_size"}, status=400)
 
         services_with_distance = []
-        if lat and lon:
+
+        if lat is not None and lon is not None:
             for org in Organization.objects.all():
                 distance = haversine(lat, lon, org.latitude, org.longitude)
                 for service in org.services.all():
